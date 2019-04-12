@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
-using Marksman.Types;
+using SnipeSharp;
+using SnipeSharp.Common;
+using SnipeSharp.Endpoints.Models;
+using SnipeSharp.Endpoints.SearchFilters;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SnipeSharp;
-using System.Diagnostics;
-using SnipeSharp.Endpoints.Models;
-using SnipeSharp.Endpoints.SearchFilters;
-using SnipeSharp.Common;
 using System.Net;
 
 namespace Marksman
