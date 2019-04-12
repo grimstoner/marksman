@@ -30,6 +30,9 @@ namespace Marksman
     /// </summary>
     class Broker
     {
+
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -133,8 +136,15 @@ namespace Marksman
         /// <param name="currentStatusLabel"></param>
         /// <param name="currentLocation"></param>
         /// <returns></returns>
-        public List<IRequestResponse> SyncAll(SnipeItApi snipe, Asset currentAsset, Model currentModel, Manufacturer currentManufacturer,
-            Category currentCategory, Company currentCompany, StatusLabel currentStatusLabel, Location currentLocation)
+        public List<IRequestResponse> SyncAll(
+            SnipeItApi snipe, 
+            Asset currentAsset, 
+            Model currentModel, 
+            Manufacturer currentManufacturer,
+            Category currentCategory, 
+            Company currentCompany, 
+            StatusLabel currentStatusLabel, 
+            Location currentLocation)
         {
             // Returns a list of messages with return info.
             // This could be broken down further

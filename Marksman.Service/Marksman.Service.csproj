@@ -26,6 +26,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -72,17 +73,19 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Management.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Management.Infrastructure.1.0.0\ref\net451\Microsoft.Management.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Management.Infrastructure.Native, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Management.Infrastructure.1.0.0\ref\net451\Microsoft.Management.Infrastructure.Native.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Quartz, Version=3.0.7.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
-      <HintPath>packages\Quartz.3.0.7\lib\net452\Quartz.dll</HintPath>
-    </Reference>
     <Reference Include="RestSharp, Version=106.1.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.1.0\lib\net452\RestSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="SnipeSharp, Version=0.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SnipeSharp.0.1.2\lib\net461\SnipeSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -105,14 +108,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Broker.cs" />
+    <Compile Include="Descriptors\AssetDescriptor.cs" />
+    <Compile Include="Deprecated\Broker.cs" />
     <Compile Include="MarksmanService.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="ReportToSnipeJob.cs" />
-    <Compile Include="Types\PCSystemTypes.cs" />
+    <Compile Include="Deprecated\ReportToSnipeJob.cs" />
+    <Compile Include="Deprecated\Types\PCSystemTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sentry.cs" />
-    <Compile Include="Types\WindowsSystemTypes.cs" />
+    <Compile Include="Deprecated\Sentry.cs" />
+    <Compile Include="Deprecated\Types\WindowsSystemTypes.cs" />
+    <Compile Include="IPScanner.cs" />
+    <Compile Include="SnipeApiExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -134,6 +140,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shared Code\SnipeSharp\SnipeSharp\SnipeSharp.csproj">
+      <Project>{3dac380d-028b-478d-b5a3-f1e3c7dcb1a2}</Project>
+      <Name>SnipeSharp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

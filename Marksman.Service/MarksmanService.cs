@@ -14,17 +14,6 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
-using System.Diagnostics;
-using SnipeSharp;
-using SnipeSharp.Endpoints.Models;
-using SnipeSharp.Endpoints.SearchFilters;
-using Quartz;
-using Quartz.Impl;
 
 namespace Marksman
 {
