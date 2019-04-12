@@ -1,47 +1,24 @@
-﻿/*
- * Copyright 2019 marksman Contributors (https://github.com/Scope-IT/marksman)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
-using System.Diagnostics;
+﻿using Quartz;
 using SnipeSharp;
 using SnipeSharp.Endpoints.Models;
-using SnipeSharp.Endpoints.SearchFilters;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Marksman
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    class Marksman
+    public class ReportToSnipeJob : IJob
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="args"></param>
-        static void Main(string[] args)
+
+        Task IJob.Execute(IJobExecutionContext context)
         {
             Trace.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + ": Started application.");
 
-            var debugTimer = new Stopwatch();
             System.Collections.Specialized.NameValueCollection appSettings = System.Configuration.ConfigurationManager.AppSettings;
-            debugTimer.Start();
+
 
             SnipeItApi snipe = new SnipeItApi();
             snipe.ApiSettings.ApiToken = appSettings["API"];
@@ -97,10 +74,10 @@ namespace Marksman
                 Console.ReadKey();
             }
 
-            debugTimer.Stop();
-            Trace.WriteLine("Total program execution time " + debugTimer.ElapsedMilliseconds + "ms.");
             Trace.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + ": Exiting application.");
             Trace.WriteLine(" ");
+
+            return null;
         }
     }
 }
