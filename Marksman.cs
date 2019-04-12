@@ -15,7 +15,7 @@
  */
 
 using Marksman.Types;
- using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,16 +27,22 @@ using SnipeSharp.Endpoints.SearchFilters;
 
 namespace Marksman
 {
-
+    /// <summary>
+    /// 
+    /// </summary>
     class Marksman
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             Trace.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + ": Started application.");
 
             var debugTimer = new Stopwatch();
             System.Collections.Specialized.NameValueCollection appSettings = System.Configuration.ConfigurationManager.AppSettings;
-            debugTimer.Start(); 
+            debugTimer.Start();
 
             SnipeItApi snipe = new SnipeItApi();
             snipe.ApiSettings.ApiToken = appSettings["API"];
@@ -60,7 +66,8 @@ namespace Marksman
             if (getOUSuccess && getOU)
             {
                 mySentry.AddQuery("Location", "OU");
-            } else
+            }
+            else
             {
                 mySentry.AddQuery("Location", "Config");
             }
@@ -83,7 +90,9 @@ namespace Marksman
             {
                 snipeBroker.SyncAll(snipe, currentAsset, currentModel, currentManufacturer, currentCategory,
                                     currentCompany, currentStatusLabel, currentLocation);
-            } else {
+            }
+            else
+            {
                 Console.WriteLine("ERROR: Could not connect to SnipeIT database instance.");
                 // Until a standardized logging framework is set up, quick way to make user see crash message.
                 Console.ReadKey();

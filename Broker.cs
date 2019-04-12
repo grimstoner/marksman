@@ -30,13 +30,24 @@ using System.Net;
 
 namespace Marksman
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class Broker
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public Broker()
         {
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="appSettings"></param>
+        /// <returns></returns>
         public bool CheckConnection(NameValueCollection appSettings)
         {
             // This method might seem overly complicated for what it is doing (simply
@@ -46,16 +57,18 @@ namespace Marksman
 
             // This method allows a set of specific, descriptive error messages to be passed
             // showing exactly what kind of configuration problem needs to be fixed.
-            
+
             string uri = "";
             string query = "users?limit=0";
             string baseUri = appSettings["BaseURI"];
 
             // Note: The program should be able to handle a BaseURI that has a trailing '/' or not.
 
-            if (baseUri.EndsWith("/")){
-                uri = baseUri + query; 
-            } else
+            if (baseUri.EndsWith("/"))
+            {
+                uri = baseUri + query;
+            }
+            else
             {
                 uri = baseUri + "/" + query;
             }
@@ -80,12 +93,15 @@ namespace Marksman
                 {
                     Console.WriteLine("HTTP 200: Connection to Snipe-IT instance succeded.");
                     return true;
-                } else {
+                }
+                else
+                {
                     Console.WriteLine("HTTP {0}", response.StatusCode);
                     Console.WriteLine("Unexpected HTTP response code, could not connect to Snipe-IT instance.");
                     return false;
                 }
-            } catch (WebException e)
+            }
+            catch (WebException e)
             {
                 HttpWebResponse r = (HttpWebResponse)e.Response;
                 if (r == null)
@@ -100,7 +116,8 @@ namespace Marksman
                 else if (r.StatusCode == HttpStatusCode.NotFound)
                 {
                     Console.WriteLine("HTTP 404: URL not found. Please double-check the BaseURI key in your <appSettings>\nblock of the Marksman config file and ensure it points to your instance of Snipe-IT.");
-                } else
+                }
+                else
                 {
                     Console.WriteLine("Unexpected error, could not connect to Snipe-IT instance.");
                     Console.WriteLine(e);
@@ -109,6 +126,18 @@ namespace Marksman
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="snipe"></param>
+        /// <param name="currentAsset"></param>
+        /// <param name="currentModel"></param>
+        /// <param name="currentManufacturer"></param>
+        /// <param name="currentCategory"></param>
+        /// <param name="currentCompany"></param>
+        /// <param name="currentStatusLabel"></param>
+        /// <param name="currentLocation"></param>
+        /// <returns></returns>
         public List<IRequestResponse> SyncAll(SnipeItApi snipe, Asset currentAsset, Model currentModel, Manufacturer currentManufacturer,
             Category currentCategory, Company currentCompany, StatusLabel currentStatusLabel, Location currentLocation)
         {

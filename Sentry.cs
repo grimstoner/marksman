@@ -25,27 +25,33 @@ using System.Collections.Specialized;
 using SnipeSharp;
 using SnipeSharp.Endpoints.Models;
 
-
 namespace Marksman
 {
     public class Sentry // Data acquissition
     {
         private Dictionary<string, List<string>> Queries; // Where key = query type, value = query itself
-        private Dictionary<string, string> Values; // Internal representation of query results
         private System.Collections.Specialized.NameValueCollection Settings;
-        public  Dictionary<string, string> rawResults // Public representation of query results - raw values. Useful for debug
+        public Dictionary<string, string> rawResults // Public representation of query results - raw values. Useful for debug
         {
-            get { return this.Values;  }
+            get { return this.Values; }
         }
 
-
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="appSettings"></param>
         public Sentry(System.Collections.Specialized.NameValueCollection appSettings) // constructor 
         {
             Queries = new Dictionary<string, List<string>>();
             Settings = appSettings;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="appSettings"></param>
+        /// <param name="snipe"></param>
+        /// <returns></returns>
         public Location GetLocation(NameValueCollection appSettings, SnipeItApi snipe)
         {
             string assetLocation = this.Values["Location"];
@@ -53,6 +59,12 @@ namespace Marksman
             return currentLocation;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="appSettings"></param>
+        /// <param name="snipe"></param>
+        /// <returns></returns>
         public StatusLabel GetStatusLabel(NameValueCollection appSettings, SnipeItApi snipe)
         {
             string defaultLabel = appSettings["DefaultStatusLabel"];
@@ -60,6 +72,12 @@ namespace Marksman
             return defaultStatusLabel;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="appSettings"></param>
+        /// <param name="snipe"></param>
+        /// <returns></returns>
         public Company GetCompany(NameValueCollection appSettings, SnipeItApi snipe)
         {
             string companyName = appSettings["Company"];
@@ -67,6 +85,12 @@ namespace Marksman
             return currentCompany;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="appSettings"></param>
+        /// <param name="snipe"></param>
+        /// <returns></returns>
         public Category GetCategory(NameValueCollection appSettings, SnipeItApi snipe)
         {
             string systemType = GetOutputVariable("Win32_ComputerSystem.PCSystemType");
@@ -85,6 +109,12 @@ namespace Marksman
             return currentCategory;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="appSettings"></param>
+        /// <param name="snipe"></param>
+        /// <returns></returns>
         public Manufacturer GetManufacturer(NameValueCollection appSettings, SnipeItApi snipe)
         {
             string manufacturer = GetOutputVariable("Win32_ComputerSystem.Manufacturer");
@@ -92,6 +122,12 @@ namespace Marksman
             return systemManufacturer;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="appSettings"></param>
+        /// <param name="snipe"></param>
+        /// <returns></returns>
         public Model GetModel(NameValueCollection appSettings, SnipeItApi snipe)
         {
             string modelTotal = GetOutputVariable("Win32_ComputerSystem.Model");
@@ -110,6 +146,12 @@ namespace Marksman
             return currentModel;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="appSettings"></param>
+        /// <param name="snipe"></param>
+        /// <returns></returns>
         public Asset GetAsset(NameValueCollection appSettings, SnipeItApi snipe)
         {
             string systemName = GetOutputVariable("Win32_ComputerSystem.Name");
@@ -126,7 +168,7 @@ namespace Marksman
                 Console.WriteLine("Enter the computer name: ");
                 systemName = Console.ReadLine();
             }
-            
+
             Asset currentComputer = new SnipeSharp.Endpoints.Models.Asset
             {
                 Company = null,
@@ -143,7 +185,13 @@ namespace Marksman
             return currentComputer;
         }
 
-        public void AddQuery(string queryType, string queryString) { // safely addes queries to the queryList monstrocity, built for expandability (c) 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="queryType"></param>
+        /// <param name="queryString"></param>
+        public void AddQuery(string queryType, string queryString)
+        { // safely addes queries to the queryList monstrocity, built for expandability (c) 
             List<string> queryList = new List<string>();
 
 
@@ -153,7 +201,8 @@ namespace Marksman
                 queryList.Add(queryString);
                 this.Queries[queryType] = queryList;
                 return;
-            } else
+            }
+            else
             {
                 queryList.Add(queryString);
                 this.Queries.Add(queryType, queryList);
@@ -161,8 +210,11 @@ namespace Marksman
             }
         }
 
-
-        private void RunWMI() { // runs all WMI queries
+        /// <summary>
+        /// 
+        /// </summary>
+        private void RunWMI()
+        { // runs all WMI queries
 
             Dictionary<string, string> resultDictionary = new Dictionary<string, string>();
             ManagementObjectCollection queryCollection;
@@ -175,7 +227,7 @@ namespace Marksman
 
                 SelectQuery selectQuery = new SelectQuery(wmiQuery);
                 ManagementObjectSearcher searcher = new ManagementObjectSearcher(selectQuery);
-            
+
 
                 queryCollection = searcher.Get();
 
@@ -185,7 +237,7 @@ namespace Marksman
                     foreach (PropertyData property in m.Properties)
                     {
                         string propertyValue = "<undefined>";
-                        if  (!String.IsNullOrWhiteSpace(property.Value.ToString()))
+                        if (!String.IsNullOrWhiteSpace(property.Value.ToString()))
                         {
                             propertyValue = property.Value.ToString().Trim();
                         }
@@ -205,7 +257,9 @@ namespace Marksman
             this.Values = resultDictionary;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
         private void RunLocation() // Runs all code related to location & location sources
         {
             string location_string = "";
@@ -235,7 +289,8 @@ namespace Marksman
                         Trace.WriteLine("Getting location from config file instead");
                         location_string = Settings["Location"];
                     }
-                } else
+                }
+                else
                 {
                     location_string = Settings["Location"];
 
@@ -245,21 +300,31 @@ namespace Marksman
 
         }
 
-
-
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public string GetOutputVariable(string key)
         {
             if (this.Values.ContainsKey(key))
             {
                 return this.Values[key];
-            } else
+            }
+            else
             {
                 return "";
             }
         }
 
-        public string GetFormattedVariable(string key, string variable = "", string format="<name>=<var>") // produces formatted output, supposed to throw exception if no results in raw results
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="variable"></param>
+        /// <param name="format"></param>
+        /// <returns></returns>
+        public string GetFormattedVariable(string key, string variable = "", string format = "<name>=<var>") // produces formatted output, supposed to throw exception if no results in raw results
         {
             if (String.IsNullOrEmpty(variable))
             {
@@ -267,15 +332,17 @@ namespace Marksman
             }
             if (this.Values.ContainsKey(key))
             {
-                return format.Replace("<var>", this.Values[key]).Replace("<name>",variable);
-            } else
+                return format.Replace("<var>", this.Values[key]).Replace("<name>", variable);
+            }
+            else
             {
                 return "ERROR: key \"" + key + "\" not found in the results of the query";
             }
         }
 
-
-
+        /// <summary>
+        /// 
+        /// </summary>
         public void Run() // supposed to run all queries of all types and handle per-type errors
         {
             this.RunWMI();
