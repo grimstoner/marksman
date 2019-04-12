@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MarksmanSetup", "..\MarksmanSetup\MarksmanSetup.vdproj", "{6CB58217-2239-4887-A1FB-E515ADAFAB69}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipeSharp", "SnipeSharp\SnipeSharp\SnipeSharp.csproj", "{3DAC380D-028B-478D-B5A3-F1E3C7DCB1A2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "marksman", "marksman.csproj", "{F459D03D-C5C4-4942-A437-AA9E99635311}"
@@ -17,10 +15,6 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6CB58217-2239-4887-A1FB-E515ADAFAB69}.Debug|Any CPU.ActiveCfg = Debug
-		{6CB58217-2239-4887-A1FB-E515ADAFAB69}.Debug|x64.ActiveCfg = Debug
-		{6CB58217-2239-4887-A1FB-E515ADAFAB69}.Release|Any CPU.ActiveCfg = Release
-		{6CB58217-2239-4887-A1FB-E515ADAFAB69}.Release|x64.ActiveCfg = Release
 		{3DAC380D-028B-478D-B5A3-F1E3C7DCB1A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3DAC380D-028B-478D-B5A3-F1E3C7DCB1A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DAC380D-028B-478D-B5A3-F1E3C7DCB1A2}.Debug|x64.ActiveCfg = Debug|Any CPU
