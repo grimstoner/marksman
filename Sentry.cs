@@ -29,11 +29,27 @@ namespace Marksman
 {
     public class Sentry // Data acquissition
     {
-        private Dictionary<string, List<string>> Queries; // Where key = query type, value = query itself
-        private System.Collections.Specialized.NameValueCollection Settings;
-        public Dictionary<string, string> rawResults // Public representation of query results - raw values. Useful for debug
+        /// <summary>
+        /// Where key = query type, value = query itself
+        /// </summary>
+        private Dictionary<string, List<string>> _queries;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private System.Collections.Specialized.NameValueCollection _settings;
+
+        /// <summary>
+        /// Internal representation of query results
+        /// </summary>
+        private Dictionary<string, string> _values;
+
+        /// <summary>
+        /// Public representation of query results - raw values. Useful for debug
+        /// </summary>
+        public Dictionary<string, string> RawResults 
         {
-            get { return this.Values; }
+            get { return this._values; }
         }
 
         /// <summary>
@@ -42,8 +58,8 @@ namespace Marksman
         /// <param name="appSettings"></param>
         public Sentry(System.Collections.Specialized.NameValueCollection appSettings) // constructor 
         {
-            Queries = new Dictionary<string, List<string>>();
-            Settings = appSettings;
+            _queries = new Dictionary<string, List<string>>();
+            _settings = appSettings;
         }
 
         /// <summary>
@@ -54,8 +70,8 @@ namespace Marksman
         /// <returns></returns>
         public Location GetLocation(NameValueCollection appSettings, SnipeItApi snipe)
         {
-            string assetLocation = this.Values["Location"];
-            Location currentLocation = new Location(assetLocation);
+            string assetLocation = this._values["Location"];
+            Location currentLocation = new Location { Name = assetLocation };
             return currentLocation;
         }
 
@@ -68,7 +84,7 @@ namespace Marksman
         public StatusLabel GetStatusLabel(NameValueCollection appSettings, SnipeItApi snipe)
         {
             string defaultLabel = appSettings["DefaultStatusLabel"];
-            StatusLabel defaultStatusLabel = new StatusLabel(defaultLabel);
+            StatusLabel defaultStatusLabel = new StatusLabel { Name = defaultLabel };
             return defaultStatusLabel;
         }
 
@@ -81,7 +97,7 @@ namespace Marksman
         public Company GetCompany(NameValueCollection appSettings, SnipeItApi snipe)
         {
             string companyName = appSettings["Company"];
-            Company currentCompany = new Company(companyName);
+            Company currentCompany = new Company { Name = companyName };
             return currentCompany;
         }
 
@@ -105,7 +121,7 @@ namespace Marksman
             {
                 Trace.WriteLine("Exception encountered while processing WinSystemType: " + e.ToString());
             }
-            Category currentCategory = new Category(systemTypeFull);
+            Category currentCategory = new Category { Name = systemTypeFull };
             return currentCategory;
         }
 
@@ -118,7 +134,7 @@ namespace Marksman
         public Manufacturer GetManufacturer(NameValueCollection appSettings, SnipeItApi snipe)
         {
             string manufacturer = GetOutputVariable("Win32_ComputerSystem.Manufacturer");
-            Manufacturer systemManufacturer = new Manufacturer(manufacturer);
+            Manufacturer systemManufacturer = new Manufacturer() { Name = manufacturer };
             return systemManufacturer;
         }
 
@@ -195,17 +211,17 @@ namespace Marksman
             List<string> queryList = new List<string>();
 
 
-            if (this.Queries.ContainsKey(queryType))
+            if (this._queries.ContainsKey(queryType))
             {
-                queryList = Queries[queryType];
+                queryList = _queries[queryType];
                 queryList.Add(queryString);
-                this.Queries[queryType] = queryList;
+                this._queries[queryType] = queryList;
                 return;
             }
             else
             {
                 queryList.Add(queryString);
-                this.Queries.Add(queryType, queryList);
+                this._queries.Add(queryType, queryList);
                 return;
             }
         }
@@ -221,7 +237,7 @@ namespace Marksman
 
 
             //Query system for Operating System information
-            foreach (string wmiQuery in this.Queries["WMI"])
+            foreach (string wmiQuery in this._queries["WMI"])
             {
                 int count = 0;
 
@@ -254,7 +270,7 @@ namespace Marksman
                 }
             }
 
-            this.Values = resultDictionary;
+            this._values = resultDictionary;
         }
 
         /// <summary>
@@ -263,14 +279,14 @@ namespace Marksman
         private void RunLocation() // Runs all code related to location & location sources
         {
             string location_string = "";
-            foreach (string locationQuery in this.Queries["Location"])
+            foreach (string locationQuery in this._queries["Location"])
             {
                 if (locationQuery == "OU")
                 {
                     try
                     {
                         int ouLevel;
-                        bool ouLevelSuccess = int.TryParse(Settings["OULevel"], out ouLevel);
+                        bool ouLevelSuccess = int.TryParse(_settings["OULevel"], out ouLevel);
                         if (!ouLevelSuccess)
                         {
                             ouLevel = 1;
@@ -287,16 +303,16 @@ namespace Marksman
                         Trace.WriteLine("Could not get location from OU");
                         Trace.WriteLine(e.ToString());
                         Trace.WriteLine("Getting location from config file instead");
-                        location_string = Settings["Location"];
+                        location_string = _settings["Location"];
                     }
                 }
                 else
                 {
-                    location_string = Settings["Location"];
+                    location_string = _settings["Location"];
 
                 }
             }
-            this.Values.Add("Location", location_string);
+            this._values.Add("Location", location_string);
 
         }
 
@@ -307,9 +323,9 @@ namespace Marksman
         /// <returns></returns>
         public string GetOutputVariable(string key)
         {
-            if (this.Values.ContainsKey(key))
+            if (this._values.ContainsKey(key))
             {
-                return this.Values[key];
+                return this._values[key];
             }
             else
             {
@@ -330,9 +346,9 @@ namespace Marksman
             {
                 format = "<var>";
             }
-            if (this.Values.ContainsKey(key))
+            if (this._values.ContainsKey(key))
             {
-                return format.Replace("<var>", this.Values[key]).Replace("<name>", variable);
+                return format.Replace("<var>", this._values[key]).Replace("<name>", variable);
             }
             else
             {

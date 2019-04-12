@@ -263,3 +263,6 @@ __pycache__/
 *.pyc
 /SnipeSharp.Demo
 /SnipeSharp/nuget.exe
+
+# Local config files
+App.config
