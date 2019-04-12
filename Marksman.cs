@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-using System;
+using Marksman.Types;
+ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,27 +27,6 @@ using SnipeSharp.Endpoints.SearchFilters;
 
 namespace Marksman
 {
-
-    public class PCSystemTypes {
-        public Dictionary<string, string> SystemTypes;
-    }
-
-    public class WindowsSystemTypes : PCSystemTypes
-    {
-        public WindowsSystemTypes()
-        {
-            this.SystemTypes = new Dictionary<string, string>();
-            this.SystemTypes.Add("0", "Undefined");
-            this.SystemTypes.Add("1", "Desktop");
-            this.SystemTypes.Add("2", "Laptop");
-            this.SystemTypes.Add("3", "Workstation");
-            this.SystemTypes.Add("4", "Enterprise Server");
-            this.SystemTypes.Add("5", "SOHO Server");
-            this.SystemTypes.Add("6", "Appliance PC");
-            this.SystemTypes.Add("7", "Performance Server");
-            this.SystemTypes.Add("8", "Maximum");
-        }
-    }
 
     class Marksman
     {
