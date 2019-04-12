@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "marksman", "marksman.csproj
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MarksmanSetup", "..\MarksmanSetup\MarksmanSetup.vdproj", "{6CB58217-2239-4887-A1FB-E515ADAFAB69}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipeSharp", "SnipeSharp\SnipeSharp\SnipeSharp.csproj", "{3DAC380D-028B-478D-B5A3-F1E3C7DCB1A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{F459D03D-C5C4-4942-A437-AA9E99635311}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6CB58217-2239-4887-A1FB-E515ADAFAB69}.Debug|Any CPU.ActiveCfg = Debug
 		{6CB58217-2239-4887-A1FB-E515ADAFAB69}.Release|Any CPU.ActiveCfg = Release
+		{3DAC380D-028B-478D-B5A3-F1E3C7DCB1A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DAC380D-028B-478D-B5A3-F1E3C7DCB1A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DAC380D-028B-478D-B5A3-F1E3C7DCB1A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DAC380D-028B-478D-B5A3-F1E3C7DCB1A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

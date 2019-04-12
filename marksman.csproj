@@ -32,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SnipeSharp">
-      <HintPath>..\snipesharp\SnipeSharp\bin\Debug\SnipeSharp.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -51,11 +48,18 @@
     <Compile Include="Broker.cs" />
     <Compile Include="Marksman.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sentry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="SnipeSharp\SnipeSharp\SnipeSharp.csproj">
+      <Project>{3dac380d-028b-478d-b5a3-f1e3c7dcb1a2}</Project>
+      <Name>SnipeSharp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
