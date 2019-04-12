@@ -1,0 +1,3 @@
+[submodule "SnipeSharp"]
+	path = SnipeSharp
+	url = https://github.com/barrycarey/SnipeSharp.git
