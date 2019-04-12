@@ -296,7 +296,10 @@ namespace Marksman
                         using (var comp = ComputerPrincipal.FindByIdentity(context, Environment.MachineName))
                             machineOU = comp.DistinguishedName.Split(',').SkipWhile(s => !s.StartsWith("OU=")).ToArray();
 
-                        location_string = machineOU[0].Split('=')[ouLevel];
+                        // This step assumes that one of the OU's should align to a Snipe Location
+                        // The ouLevel parameter determines how far down in the OU structure this Location is
+                        // This could be variable, and not always the same. Consider something else here.
+                        location_string = machineOU[ouLevel].Split('=')[1];
                     }
                     catch (Exception e)
                     {

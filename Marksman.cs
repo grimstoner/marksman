@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using Marksman.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -91,7 +91,7 @@ namespace Marksman
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    Console.WriteLine("HTTP 200: Connection to Snipe-IT instance succeded.");
+                    Console.WriteLine("HTTP 200: Connection to Snipe-IT instance succeeded.");
                     return true;
                 }
                 else
