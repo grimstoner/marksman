@@ -11,23 +11,26 @@ namespace Marksman
         public static void Main()
         {
 
-            var devices = IPScanner.Scan(new string[] { "172.16.26" }).Where(i => i.Status == System.Net.NetworkInformation.IPStatus.Success).ToList();
-            foreach (var item in devices)
-            {
-                //var a = AssetDescriptor.Create(item.HostName);                
-                //var t = "";
-            }
+            //var devices = IPScanner.Scan(new string[] { "172.16.26" }).Where(i => i.Status == System.Net.NetworkInformation.IPStatus.Success).ToList();
+            //foreach (var item in devices)
+            //{
+            //    //var a = AssetDescriptor.Create(item.HostName);                
+            //    //var t = "";
+            //}
 
 
 
 
 
-            //// Single Device.
-            //SnipeItApi snipe = new SnipeItApi();
-            //snipe.ApiSettings.BaseUrl = new Uri(System.Configuration.ConfigurationManager.AppSettings["Snipe:ApiAddress"]);
-            //snipe.ApiSettings.ApiToken = System.Configuration.ConfigurationManager.AppSettings["Snipe:ApiToken"];            
+            // Single Device.
+            SnipeItApi snipe = new SnipeItApi();
+            snipe.ApiSettings.BaseUrl = new Uri(System.Configuration.ConfigurationManager.AppSettings["Snipe:ApiAddress"]);
+            snipe.ApiSettings.ApiToken = System.Configuration.ConfigurationManager.AppSettings["Snipe:ApiToken"];
 
-            //var device = AssetDescriptor.Create("localhost");
+            var device = AssetDescriptor.Create("localhost");
+            var components = ComponentDescriptor.Create("localhost");
+
+            
 
             //try
             //{
@@ -35,8 +38,8 @@ namespace Marksman
             //}
             //catch (Exception ex)
             //{
-                
-            //}            
+
+            //}
 
 
             Console.ReadLine();

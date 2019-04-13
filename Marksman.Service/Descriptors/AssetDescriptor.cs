@@ -52,7 +52,7 @@ namespace Marksman.Service.Descriptors
                 //IEnumerable<CimInstance> processorDetails = session.EnumerateInstances(@"root\cimv2", "Win32_Processor");
                 //IEnumerable<CimInstance> memoryDetails = session.EnumerateInstances(@"root\cimv2", "Win32_MemoryArray");
                 //IEnumerable<CimInstance> motherBoardDetails = session.EnumerateInstances(@"root\cimv2", "Win32_BaseBoard");
-                //IEnumerable<CimInstance> hddDetails = session.EnumerateInstances(@"root\cimv2", "Win32_DiskDrive");
+               // IEnumerable<CimInstance> hddDetails = session.EnumerateInstances(@"root\cimv2", "Win32_DiskDrive");
                 //IEnumerable<CimInstance> networkDetails = session.EnumerateInstances(@"root\cimv2", "Win32_NetworkAdapter");
 
 
@@ -61,16 +61,33 @@ namespace Marksman.Service.Descriptors
                 //    System.Console.WriteLine($"{prop.Name}  : {prop.Value}");
                 //}
 
-                //IEnumerable<CimInstance> list = session.EnumerateInstances(@"root\cimv2", "Win32_NetworkAdapter");
+                IEnumerable<CimInstance> list = session.EnumerateInstances(@"root\cimv2", "Win32_DiskDrive");
+                foreach (var item in list)
+                {
+                    foreach (var prop in item.CimInstanceProperties)
+                    {
+                        System.Console.WriteLine($"{prop.Name}  : {prop.Value}");
+                    }
+                    Console.WriteLine();
+                }
 
-                //foreach (var item in list)
-                //{
-                //    foreach (var prop in item.CimInstanceProperties)
-                //    {
-                //        System.Console.WriteLine($"{prop.Name}  : {prop.Value}");                    
-                //    }
-                //    Console.WriteLine();
-                //}
+                //Component c = new Component();
+                //c.Category
+                //c.Company
+                //c.CreatedAt
+                //c.Id
+                //c.Location
+                //c.MinAmt
+                //c.Name
+                //c.OrderNumber
+                //c.PurchaseCost
+                //c.PurchaseDate
+                //c.Quantity
+                //c.Remaining
+                //c.SerialNumber
+                //c.UpdatedAt
+                //c.UserCanCheckout
+
 
                 return new AssetDescriptor()
                 {

@@ -108,6 +108,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Descriptors\ComponentDescriptor.cs" />
     <Compile Include="Descriptors\AssetDescriptor.cs" />
     <Compile Include="Deprecated\Broker.cs" />
     <Compile Include="MarksmanService.cs" />
