@@ -110,14 +110,10 @@
   <ItemGroup>
     <Compile Include="Descriptors\ComponentDescriptor.cs" />
     <Compile Include="Descriptors\AssetDescriptor.cs" />
-    <Compile Include="Deprecated\Broker.cs" />
+    <Compile Include="Descriptors\DescriptorCategories.cs" />
     <Compile Include="MarksmanService.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Deprecated\ReportToSnipeJob.cs" />
-    <Compile Include="Deprecated\Types\PCSystemTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Deprecated\Sentry.cs" />
-    <Compile Include="Deprecated\Types\WindowsSystemTypes.cs" />
     <Compile Include="IPScanner.cs" />
     <Compile Include="SnipeApiExtensions.cs" />
   </ItemGroup>

@@ -1,67 +1,45 @@
-﻿using Marksman.Service;
-using Marksman.Service.Descriptors;
-using SnipeSharp;
-using System;
-using System.Linq;
+﻿/*
+ * Copyright 2019 marksman Contributors (https://github.com/Scope-IT/marksman)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using Topshelf;
 
 namespace Marksman
 {
+    /// <summary>
+    /// <c>Program</c> defines the Marksman Service application entry point.
+    /// </summary>
     class Program
     {
+        /// <summary>
+        /// Main execution entry. 
+        /// </summary>
         public static void Main()
         {
-
-            //var devices = IPScanner.Scan(new string[] { "172.16.26" }).Where(i => i.Status == System.Net.NetworkInformation.IPStatus.Success).ToList();
-            //foreach (var item in devices)
-            //{
-            //    //var a = AssetDescriptor.Create(item.HostName);                
-            //    //var t = "";
-            //}
-
-
-
-
-
-            // Single Device.
-            SnipeItApi snipe = new SnipeItApi();
-            snipe.ApiSettings.BaseUrl = new Uri(System.Configuration.ConfigurationManager.AppSettings["Snipe:ApiAddress"]);
-            snipe.ApiSettings.ApiToken = System.Configuration.ConfigurationManager.AppSettings["Snipe:ApiToken"];
-
-            var device = AssetDescriptor.Create("localhost");
-            var components = ComponentDescriptor.Create("localhost");
-
-            
-
-            //try
-            //{
-            //    snipe.SyncAssetDetails(device);
-            //}
-            //catch (Exception ex)
-            //{
-
-            //}
-
-
-            Console.ReadLine();
-
-            //var rc = HostFactory.Run(x =>
-            //{
-            //    x.Service<MarksmanService>(s =>
-            //    {
-            //        s.ConstructUsing(name => new MarksmanService());
-            //        s.WhenStarted(tc => tc.Start());
-            //        s.WhenStopped(tc => tc.Stop());
-            //    });
-            //    x.RunAsLocalSystem();
-
-            //    x.SetDescription("Sample Topshelf Host");
-            //    x.SetDisplayName("Stuff");
-            //    x.SetServiceName("Stuff");
-            //});
-
-            //var exitCode = (int)Convert.ChangeType(rc, rc.GetTypeCode());
-            //Environment.ExitCode = exitCode;
+            HostFactory.Run(configure =>
+            {
+                configure.Service<MarksmanService>(service =>
+                {
+                    service.ConstructUsing(marksman => new MarksmanService());
+                    service.WhenStarted(marksman => marksman.StartAsync());
+                    service.WhenStopped(marksman => marksman.Stop());
+                });
+                configure.SetServiceName("Marksman Service");
+                configure.SetDisplayName("Marksman Service");
+                configure.SetDescription("Marksman Service");
+            });          
         }
-
     }
 }

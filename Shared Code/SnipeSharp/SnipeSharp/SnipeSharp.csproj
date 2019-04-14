@@ -57,6 +57,7 @@
     <Compile Include="Attributes\RequiredRequestHeader.cs" />
     <Compile Include="Common\ApiSettings.cs" />
     <Compile Include="Common\RequestManagerRestSharp.cs" />
+    <Compile Include="Endpoints\ExtendedManagers\ComponentEndpointManager.cs" />
     <Compile Include="Endpoints\Models\CommonEndpointModel.cs" />
     <Compile Include="Common\Date.cs" />
     <Compile Include="Common\IRequestManager.cs" />

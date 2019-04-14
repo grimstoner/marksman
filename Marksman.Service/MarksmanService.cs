@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
+using Marksman.Service;
+using Marksman.Service.Descriptors;
+using SnipeSharp;
+using System;
+using System.Configuration;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Timers;
 
 namespace Marksman
 {
     /// <summary>
-    /// 
+    /// Locates and synchronizes system details with the configured <c>Snipe.It</c> 
+    /// system. 
     /// </summary>
-    public class MarksmanService
-    {
-        
+    public class MarksmanService : IDisposable
+    {        
         /// <summary>
         /// 
         /// </summary>
@@ -32,17 +41,191 @@ namespace Marksman
 
         }
 
-        
-        
+        #region IDisposable Implementation
 
-        public void Start()
+        /// <inheritdoc />
+        public void Dispose()
         {
-            // Start the scheduler here
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
+        /// <inheritdoc />
+        private void Dispose(bool disposing)
+        {
+            if (!this.isDisposed)
+            {
+                if (disposing)
+                {
+                    if (this.timer != null)
+                    {
+                        this.timer.Stop();
+                        this.timer.Elapsed -= this.OnTimerElapsed;
+                        this.timer.Dispose();
+                        this.timer = null;
+                    }
+                }
+
+                this.isDisposed = true;
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Asynchronously starts the current service.
+        /// </summary>
+        /// <returns>
+        ///     True if the service was started successfully.
+        /// </returns>
+        public bool StartAsync()
+        {
+            Task.Run(() =>
+            {
+                this.Start();
+            });
+            return true;
+        }
+
+        /// <summary>
+        /// Starts the current service.
+        /// </summary>
+        private void Start()
+        {
+            var interval =
+                TimeSpan.Parse(
+                    ConfigurationManager.AppSettings["Marksman:ServiceInterval"],
+                    CultureInfo.InvariantCulture).TotalMilliseconds;
+            
+            this.timer = 
+                new Timer()
+                {
+                    Interval = interval > 0 ? interval : TimeSpan.FromHours(24).TotalMilliseconds,
+                    AutoReset = false
+                };
+            this.timer.Elapsed += this.OnTimerElapsed;
+            this.OnTimerElapsed(this, null);
+        }
+
+        /// <summary>
+        /// Synchronizes the local systems details with the configured <c>Snipe.It</c> 
+        /// system.
+        /// </summary>
+        private void SyncLocalDetails()
+        {
+            this.SyncHostNameDetails("localhost");           
+        }
+
+        /// <summary>
+        /// Scans the local network and synchronizes the located systems details with the 
+        /// configured <c>Snipe.It</c> system.
+        /// </summary>
+        private void SyncScannerDetails()
+        {
+            var scannerSubnets = 
+                ConfigurationManager
+                    .AppSettings["Marksman:ScannerSubnet"]
+                    .Split("|".ToArray(), StringSplitOptions.RemoveEmptyEntries);
+
+            var devices = 
+                    IPScanner
+                    .Scan(scannerSubnets)
+                    .Where(i => i.Status == System.Net.NetworkInformation.IPStatus.Success)
+                    .ToList();
+
+            foreach (var item in devices)
+            {
+                this.SyncHostNameDetails(item.HostName);
+            }
+        }
+
+        /// <summary>
+        /// Synchronizes the specified system's details with the configured <c>Snipe.It</c> 
+        /// system.
+        /// </summary>
+        private void SyncHostNameDetails(string hostName)
+        {
+            // Single Device.
+            SnipeItApi snipe =
+                SnipeApiExtensions.CreateClient(
+                    ConfigurationManager.AppSettings["Snipe:ApiAddress"],
+                    ConfigurationManager.AppSettings["Snipe:ApiToken"]);
+
+            if (!String.IsNullOrWhiteSpace(hostName))
+            {
+                Console.WriteLine($"Retrieving asset details for {hostName}");
+                try
+                {
+                    var asset = AssetDescriptor.Create(hostName);
+                    var components = ComponentDescriptor.Create(hostName);
+                    try
+                    {
+                        Console.WriteLine($"Synchronizing asset details for {hostName}");
+                        // The current version of the SnipeSharp API has mapping issues causing the response not de serializing.
+                        snipe.SyncAssetWithCompoments(asset, components);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Failed to sync asset details for {hostName}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to retrieve asset details for {hostName}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Stops the current service.
+        /// </summary>
         public void Stop()
         {
-           // Stop the scheduler here
+            this.timer.Stop();
         }
+       
+        /// <summary>
+        /// Called when the current service timer has elapsed.
+        /// </summary>     
+        private void OnTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            Console.WriteLine($"Service interval timer elapsed.");
+            this.timer.Stop();
+            try
+            {
+                // Start the scheduler here
+                if (Convert.ToBoolean(ConfigurationManager.AppSettings["Marksman:ScannerEnabled"]))
+                {
+                    this.SyncScannerDetails();
+                }
+                else
+                {
+                    this.SyncLocalDetails();
+                }
+            }
+            catch
+            {
+                // Continue.
+            }
+            finally
+            {
+                Console.WriteLine($"Service interval timer started.");
+                this.timer.Start();
+            }
+        }
+
+        #region Instance Fields
+
+        /// <summary>
+        /// The <see cref="Timer"/> instance for the current <see cref="MarksmanService"/>.
+        /// </summary>
+        private Timer timer;
+
+        /// <summary>
+        /// Indicates if the current <see cref="MarksmanService"/> is disposed.
+        /// </summary>
+        private bool isDisposed;
+
+        #endregion
     }
 }

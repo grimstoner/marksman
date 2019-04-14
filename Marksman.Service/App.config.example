@@ -3,6 +3,9 @@
   <appSettings>
     <add key="Snipe:ApiAddress" value="SNIPEAPIADDRESS"/>
     <add key="Snipe:ApiToken" value="SNIPEAPITOKEN"/>
+    <add key="Marksman:ServiceInterval" value="-1"/>
+    <add key="Marksman:ScannerEnabled" value="False"/>
+    <add key="Marksman:ScannerSubnet" value="SUBNET|SUBNET|SUBNET"/>
   </appSettings>
   <startup>
     <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.6.1"/>

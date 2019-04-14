@@ -68,9 +68,9 @@ namespace SnipeSharp.Endpoints.Models
         [JsonProperty("image")]
         public string Image { get; set; }
 
-        [JsonProperty("assigned_to")]
-        [OptionalRequestHeader("assigned_to")]
-        public User AssignedTo { get; set; }
+        //[JsonProperty("assigned_to")]
+        //[OptionalRequestHeader("assigned_to")]
+        //public User AssignedTo { get; set; }
 
         private string _warrantyMonths;
 

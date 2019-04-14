@@ -6,9 +6,9 @@ namespace SnipeSharp.Endpoints.Models
 {
     public class Component : CommonEndpointModel
     {
-        [JsonProperty("serial_number")]
-        [OptionalRequestHeader("serial_number")]
-        public string SerialNumber { get; set; }
+        [JsonProperty("serial")]
+        [OptionalRequestHeader("serial")]
+        public string Serial { get; set; }
 
         [JsonProperty("location")]
         [OptionalRequestHeader("location_id")]
